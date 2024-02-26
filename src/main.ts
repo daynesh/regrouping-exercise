@@ -1,4 +1,4 @@
-export function findUnique(str: string) {
+export function findUniqueChars(str: string) {
   // The variable that contains the unique values
   let uniq = "";
 
@@ -17,59 +17,55 @@ export function findUnique(str: string) {
   return uniq;
 }
 
-function findUniqueCount(str: string) {
-  return findUnique(str).length
+export function findUniqueCharCount(str: string) {
+  return findUniqueChars(str).length
 }
 
-function findIndices(str: string) {
-  let uniqIndices = "";
+export function generateUniqueCharIndices(input: string) {
   let uniqCharacters = "";
-  let lastIndexAdded = 0;
-  let exampleStrWithCommas = "";
+  let solution = "";
+  let numOfSpaces = 0;
 
-  //console.debug("String to process: " + str);
 
-  for (let i = 0; i < str.length; i++) {
-    //console.debug("Char: " + str[i]);
-
+  for (let i = 0; i < input.length; i++) {
     // Account for whitespace
-    if (str[i] == ' ') {
-      //console.debug("Found a space, adding a space to index");
-      uniqIndices += ' ';
-      exampleStrWithCommas += ' ';
+    if (input[i] == ' ') {
+      numOfSpaces++;
+      solution += ' ';
       continue;
     }
 
-    // Checking if the uniq contains the character
-    if (!uniqCharacters.includes(str[i])) {
-      // If the character not present in uniq
-      // Concatenate the character with uniq
-      uniqCharacters += str[i];
-
-      lastIndexAdded++;
-      //console.debug("Adding a new index of: " + String(lastIndexAdded));
-      uniqIndices += String(lastIndexAdded) + ',';
-    } else {
-
-      //console.debug("Reusing existing index of: " + String(str.indexOf(str[i])+1));
-      let indexOfChar = str.indexOf(str[i]);
-
-      uniqIndices += String(indexOfChar) + ',';
+    // Determine whether we need to append a comma or not
+    // if we're at i=0, don't append
+    // if the previous char was a ' ', don't append
+    if ((i != 0) && (input[i-1] != ' ')) {
+      solution += ',';
     }
 
-    exampleStrWithCommas += str[i] + ',';
+    // If we haven't seen this specific character before
+    if (!uniqCharacters.includes(input[i])) {
+      // Concatenate the character with uniqCharacters
+      uniqCharacters += input[i];
+
+      solution += uniqCharacters.length;
+    } else {
+      // if we've seen this char before
+      // find the index of of the char in our uniqCharacters string
+      let indexOfChar = uniqCharacters.indexOf(input[i]) + 1;
+
+      // concatenate this index of where we saw it
+      solution += String(indexOfChar);
+    }
   }
 
-  console.debug(exampleStrWithCommas);
-
-  return uniqIndices;
+  return solution;
 }
 
-let messageToDecode = "you are absolutely amazing";
-console.log(findUniqueCount(messageToDecode));
-console.log(findUnique("you are absolutely amazing"));
-
-console.log("Finding indices for: " + messageToDecode);
-console.log(findIndices(messageToDecode));
-
-console.log("Hello, world!");
+// let messageToDecode = "you are absolutely amazing";
+// console.log(findUniqueCount(messageToDecode));
+console.log(generateUniqueCharIndices("you are absolutely amazing"));
+//
+// console.log("Finding indices for: " + messageToDecode);
+// console.log(findIndices(messageToDecode));
+//
+// console.log("Hello, world!");
