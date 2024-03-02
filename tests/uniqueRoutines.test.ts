@@ -1,4 +1,4 @@
-import unique = require('../src/main');
+import unique = require('../src/uniqueRoutines');
 
 describe('testing findUniqueChars', () => {
   test('testing unique characters without whitespace', () => {
