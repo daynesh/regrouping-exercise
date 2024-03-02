@@ -1,5 +1,3 @@
-import unique = require('../src/uniqueRoutines');
-import regrouping = require('../src/regroupingProblems');
 import mr = require('../src/messageRegistry');
 import ap = require('../src/additionProblems');
 
