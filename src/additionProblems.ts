@@ -185,17 +185,30 @@ export class AdditionProblems {
   printWithSolutions() {
     console.log("Generated problems with solutions:");
 
+    let [firstLine, secondLine, thirdLine, fourthLine, fifthLine]: string[] = ['','','','','',''];
     for (let i = 0; i < this.numOfProblems; i++) {
-     console.log(i+1 + ")   " + this.problemsWithSolutions[i].numA[0] + "," +
-                         this.problemsWithSolutions[i].numA[1]+ "," +
-                         this.problemsWithSolutions[i].numA[2]);
-     console.log("  +  " + this.problemsWithSolutions[i].numB[0] + "," +
-                         this.problemsWithSolutions[i].numB[1]+ "," +
-                         this.problemsWithSolutions[i].numB[2]);
-     console.log("   -------");
-     console.log("     " + this.problemsWithSolutions[i].soln[0] + "," +
-                         this.problemsWithSolutions[i].soln[1]+ "," +
-                         this.problemsWithSolutions[i].soln[2]);
+      firstLine  +=      "     " + this.problemsWithSolutions[i].carry + "     ";
+
+      // Add a space at the start when problem numbers are not two digits long
+      if (i < 9) {
+        secondLine += " ";
+      }
+      secondLine += i+1 + ")  " + this.problemsWithSolutions[i].numA + "     ";
+      thirdLine  += "  +  " + this.problemsWithSolutions[i].numB + "     ";
+      fourthLine += "  --------     ";
+      fifthLine  += "     " + this.problemsWithSolutions[i].soln + "     ";
+
+      if (((i+1) % 5) == 0) {
+        console.log(firstLine);
+        console.log(secondLine);
+        console.log(thirdLine);
+        console.log(fourthLine);
+        console.log(fifthLine);
+        console.log();
+
+        // Clear lines
+        [firstLine, secondLine, thirdLine, fourthLine, fifthLine] = ['','','','','',''];
+      }
     }
   }
 
