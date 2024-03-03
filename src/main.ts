@@ -1,14 +1,13 @@
-import mr = require('../src/messageRegistry');
+import { MessageRegistry } from '../src/messageRegistry';
 import ap = require('../src/additionProblems');
 
 const messageToDecode = "you are absolutely amazing"; // TODO: Get this from CLI
-let messageRegistry = new mr.MessageRegistry(messageToDecode);
-messageRegistry.generateIndices();
-messageRegistry.print();
+let messageEncoder = new MessageRegistry(messageToDecode);
+messageEncoder.print();
 
 // Now generate problems
-let numOfProblems = messageRegistry.getUniqueCount();
-let problems = new ap.AdditionProblems(1);
+let numOfProblems = messageEncoder.getUniqueCharCount();
+let problems = new ap.AdditionProblems(messageEncoder);
 problems.generateProblems();
 problems.print();
 problems.printWithSolutions();

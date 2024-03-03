@@ -1,54 +1,55 @@
 export class MessageRegistry {
   readonly messageToDecode: string;
+  readonly messageAsArray: string[];
+  uniqueCharLookup: string[]          // array of all unique characters from message
   uniqueIndices: string;
+  encodedMessage: number[];           // array of unique numbers mapped to each unique letter from message
   uniqueCharCount: number;
 
   constructor(message: string) {
     this.messageToDecode = message;
+    this.messageAsArray = message.replace(/ /g, '').split('');
+    this.uniqueCharLookup = [];
+    this.encodedMessage = [];
     this.uniqueIndices = "";
     this.uniqueCharCount = 0;
+    this.generateIndices();
   }
 
   generateIndices() {
-    let uniqCharacters = "";
-    let solution = "";
+    let encodedMessage = [];
+    for (let i = 0; i < this.messageAsArray.length; i++) {
+      let char = this.messageAsArray[i];
 
-    for (let i = 0; i < this.messageToDecode.length; i++) {
       // Account for whitespace
-      if (this.messageToDecode[i] == ' ') {
-        solution += ' ';
+      if (char == ' ') {
         continue;
       }
 
-      // Determine whether we need to append a comma or not
-      // if we're at i=0, don't append
-      // if the previous char was a ' ', don't append
-      if ((i != 0) && (this.messageToDecode[i - 1] != ' ')) {
-        solution += ',';
-      }
-
       // If we haven't seen this specific character before
-      if (!uniqCharacters.includes(this.messageToDecode[i])) {
-        // Concatenate the character with uniqCharacters
-        uniqCharacters += this.messageToDecode[i];
+      if (!this.uniqueCharLookup.includes(char)) {
+        // Keep a record of it
+        this.uniqueCharLookup.push(char);
 
-        solution += uniqCharacters.length;
+        // Append the index to our encodedMessage
+        this.encodedMessage.push(this.uniqueCharLookup.length-1);
       } else {
         // if we've seen this char before
-        // find the index of of the char in our uniqCharacters string
-        let indexOfChar = uniqCharacters.indexOf(this.messageToDecode[i]) + 1;
+        // find the corresponding index from uniqueCharLookup
+        let index = this.uniqueCharLookup.indexOf(char);
 
-        // concatenate this index of where we saw it
-        solution += String(indexOfChar);
+        // Append the index to our encodedMessage
+        this.encodedMessage.push(index);
       }
     }
-
-    this.uniqueIndices = solution;
-    this.uniqueCharCount = uniqCharacters.length;
   }
 
-  getUniqueCount() {
-    return this.uniqueCharCount;
+  getUniqueCharCount() {
+    return this.uniqueCharLookup.length;
+  }
+
+  getCharFromIndex(index: number) {
+    return this.uniqueCharLookup[index];
   }
 
   print() {
@@ -56,29 +57,8 @@ export class MessageRegistry {
     console.log("Message to decode: " + this.messageToDecode);
     console.log();
     console.log("Unique indices are as follows:");
-
-    // Print message with commas
-    let messageWithCommas = "";
-    for (let i = 0; i < this.messageToDecode.length; i++) {
-      // Account for whitespace
-      if (this.messageToDecode[i] == ' ') {
-        messageWithCommas += ' ';
-        continue;
-      }
-
-      // Determine whether we need to append a comma or not
-      // if we're at i=0, don't append
-      // if the previous char was a ' ', don't append
-      if ((i != 0) && (this.messageToDecode[i - 1] != ' ')) {
-        messageWithCommas += ',';
-      }
-
-      messageWithCommas += this.messageToDecode[i];
-    }
-    console.log("  " + messageWithCommas);
-
-    // Print indices with commas
-    console.log("  " + this.uniqueIndices);
+    console.log("  " + this.messageAsArray);
+    console.log("  " + this.encodedMessage);
     console.log();
   }
 }
