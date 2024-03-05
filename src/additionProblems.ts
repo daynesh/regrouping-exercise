@@ -168,6 +168,24 @@ export class AdditionProblems {
       // Finally, save equation before moving onto next problem
       this.problemsWithSolutions[i] = equation;
     }
+
+    // Fill any unfilled Letter Decoder tuples
+    // First get a list of available characters to fill with
+    const possibleCharacters = "abcdefghijklmnopqrstuvwxyz";
+    for (let i = 0; i < 10; i++) {
+      let charToExclude = this.letterDecoders[this.letterDecoders.length-1][i];
+      if (charToExclude != null) {
+        // Remove the excluded character from the array.
+        possibleCharacters.replace(charToExclude, '');
+      }
+    }
+
+    // Now fill unfilled Letter Decode tuples
+    for (let i = 0; i < 10; i++) {
+      if (this.letterDecoders[this.letterDecoders.length-1][i] == null) {
+        this.letterDecoders[this.letterDecoders.length-1][i] = possibleCharacters[i];
+      }
+    }
   }
 
   static convertDigitsToArray(input: number) {
@@ -183,13 +201,35 @@ export class AdditionProblems {
   }
 
   printWithSolutions() {
-    console.log("Generated problems with solutions:");
-
     let [firstLine, secondLine, thirdLine, fourthLine, fifthLine]: string[] = ['','','','','',''];
     for (let i = 0; i < this.numOfProblems; i++) {
+      // Print Letter Decoder
+      if ((i == 0) || ((i % 10) == 0)) {
+        let sectionNumber = Math.floor(i / 10);
+        let [letterDecoderLine1, letterDecoderLine2, letterDecoderLine3] = ["  ", "  ", "  "];
+        console.log("Section " + (sectionNumber + 1));
+        letterDecoderLine1 += "  0 => " + this.letterDecoders[sectionNumber][0];
+        letterDecoderLine2 += "  1 => " + this.letterDecoders[sectionNumber][1];
+        letterDecoderLine3 += "  2 => " + this.letterDecoders[sectionNumber][2];
+        letterDecoderLine1 += "  3 => " + this.letterDecoders[sectionNumber][3];
+        letterDecoderLine2 += "  4 => " + this.letterDecoders[sectionNumber][4];
+        letterDecoderLine3 += "  5 => " + this.letterDecoders[sectionNumber][5];
+        letterDecoderLine1 += "  6 => " + this.letterDecoders[sectionNumber][6];
+        letterDecoderLine2 += "  7 => " + this.letterDecoders[sectionNumber][7];
+        letterDecoderLine3 += "  8 => " + this.letterDecoders[sectionNumber][8];
+        letterDecoderLine1 += "  9 => " + this.letterDecoders[sectionNumber][9];
+        console.log("    Letter Decoder");
+        console.log(letterDecoderLine1);
+        console.log(letterDecoderLine2);
+        console.log(letterDecoderLine3);
+        console.log();
+        console.log("Problems:");
+      }
+
+      // Now construct our problems
       firstLine  +=      "     " + this.problemsWithSolutions[i].carry + "     ";
 
-      // Add a space at the start when problem numbers are not two digits long
+      // When problem numbers are single digits, add a space at the start
       if (i < 9) {
         secondLine += " ";
       }
@@ -198,6 +238,7 @@ export class AdditionProblems {
       fourthLine += "  --------     ";
       fifthLine  += "     " + this.problemsWithSolutions[i].soln + "     ";
 
+      // Now print to stdout
       if (((i+1) % 5) == 0) {
         console.log(firstLine);
         console.log(secondLine);
@@ -206,7 +247,7 @@ export class AdditionProblems {
         console.log(fifthLine);
         console.log();
 
-        // Clear lines
+        // Clear lines so we can start afresh
         [firstLine, secondLine, thirdLine, fourthLine, fifthLine] = ['','','','','',''];
       }
     }
